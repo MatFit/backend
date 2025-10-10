@@ -1,5 +1,6 @@
 package com.aftermath.backend.controller;
 
+import com.aftermath.backend.dto.ApiResponseDto;
 import com.aftermath.backend.dto.LoginRequest;
 import com.aftermath.backend.dto.LoginResponse;
 
@@ -16,18 +17,12 @@ import java.time.Duration;
 // Handles routing
 @RestController
 @RequestMapping("/api/auth")
-public class AuthenticationController {
-    private final UserService userService;
-
-    public AuthenticationController(UserService userService) {
-        this.userService = userService;
-    }
+public class AuthenticationController extends Controller {
 
     @PostMapping("/signup")
-    public ResponseEntity<Void> signUp(@Valid @RequestBody SignUpRequest req) throws IOException {
-        System.out.println("HelloHelloHelloHelloHelloHelloHelloHelloHelloHello");
+    public ResponseEntity<ApiResponseDto> signUp(@Valid @RequestBody SignUpRequest req) throws IOException {
         userService.registerNewUser(req);
-        return ResponseEntity.ok().build(); // We'll have them just log in instead of giving them a session rn
+        return ResponseEntity.ok(new ApiResponseDto(true, "userWasRegistered")); // We'll have them just log in instead of giving them a session rn
     }
 
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
