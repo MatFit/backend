@@ -20,15 +20,15 @@ public class UserService {
     }
 
     @NotNull
-    public void registerNewUser(SignUpRequest signUpRequest){
+    public User registerNewUser(SignUpRequest signUpRequest){
         if (repo.existsByUsername(signUpRequest.getUsername())){
             throw new RuntimeException("Username already exists"); // Closes thread, so I believe the whole backend needs fixing later
         }
 
         String hashed = encoder.encode(signUpRequest.getPassword());
         User newUser = new User(null, signUpRequest.getUsername(), signUpRequest.getEmail(), hashed);
-
         repo.save(newUser);
+        return newUser;
     }
 
     @NotNull

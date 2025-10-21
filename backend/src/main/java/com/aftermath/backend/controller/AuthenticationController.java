@@ -1,12 +1,14 @@
 package com.aftermath.backend.controller;
 
-import com.aftermath.backend.dto.ApiResponseDto;
+import com.aftermath.backend.dto.ApiResponseDTO;
 import com.aftermath.backend.dto.LoginRequest;
 import com.aftermath.backend.dto.LoginResponse;
 
 import com.aftermath.backend.dto.SignUpRequest;
+import com.aftermath.backend.service.AuthService;
 import com.aftermath.backend.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.web.exchanges.HttpExchange;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -18,41 +20,18 @@ import java.time.Duration;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController extends Controller {
+    private final AuthService authService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<ApiResponseDto> signUp(@Valid @RequestBody SignUpRequest req) throws IOException {
-        userService.registerNewUser(req);
-        return ResponseEntity.ok(new ApiResponseDto(true, "userWasRegistered")); // We'll have them just log in instead of giving them a session rn
+    @Autowired
+    public AuthenticationController(AuthService authService){
+        this.authService = authService;
     }
 
-    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest req) throws IOException {
-        // Backend here handles /login where we require username and password
-        // make sure that the password pass is hashed and compared to what's in the DB (where there the password is also hashed
-        Boolean matches = userService.authenticateUser(req);
-
-        if (matches){
-            String sessionToken = generateSessionToken();
-            ResponseCookie cookie = ResponseCookie.from("SESSION_TOKEN", sessionToken)
-                    .httpOnly(true) // Only http
-                    .secure(true) // Secure?
-                    .path("/") // Idk
-                    .maxAge(Duration.ofDays(2)) // Lifetime of cookie
-                    .build();
-            LoginResponse messageResponse = new LoginResponse("Login Success", null);
-            return ResponseEntity.status(HttpStatus.OK).header(HttpHeaders.SET_COOKIE, cookie.toString()).body(messageResponse);
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new LoginResponse("Invalid credentials", null));
-    }
-
-
-    public String generateSessionToken(){
-        return "session_" + System.currentTimeMillis() + "_" + Math.random();
-    }
-
-    public UserService getUserService() {
-        return userService;
+    // Abstract away login like this into authservice
+    @PostMapping(path = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponseDTO<LoginResponse>> login(@Valid @RequestBody LoginRequest req) throws IOException {
+        LoginResponse loginResponse = authService.login(req);
+        return ApiResponseDTO.success(loginResponse).toResponseEntity();
     }
 }
 
