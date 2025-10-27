@@ -3,14 +3,20 @@ import com.aftermath.backend.dto.LoginRequest;
 import com.aftermath.backend.dto.SignUpRequest;
 import com.aftermath.backend.model.User;
 import com.aftermath.backend.repository.UserRepository;
+import com.aftermath.backend.service.serviceInterface.UserServiceInterface;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 // Business Logic -> creating users, check cred
 @Service
-public class UserService {
+public class UserService implements UserServiceInterface {
     private final UserRepository repo;
     private final PasswordEncoder encoder;
 
@@ -32,18 +38,22 @@ public class UserService {
     }
 
     @NotNull
-    public Boolean authenticateUser(@NotNull LoginRequest req){
-        Optional<User> opt = repo.findByUsername(req.getUsername());
-
-        // No users found
-        if (opt.isEmpty()){ return false; }
-
-        User foundUser = opt.get();
-
-        return encoder.matches(req.getPassword(), foundUser.getPassword());
+    public User authenticateUser(@NotNull LoginRequest loginRequest) {
+        User foundUser = repo.findByUsername(loginRequest.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found: " + loginRequest.getUsername()));
+        if (!encoder.matches(loginRequest.getPassword(), foundUser.getPassword())) {
+            throw new BadCredentialsException("Invalid username or password");
+        }
+        return foundUser;
+    }
+    public List<User> getAllUsers() {
+        return repo.findAll();
     }
 
-    public UserRepository getRepo() {
-        return repo;
+    public User getUserById(UUID uuid) {
+        return repo.findById(uuid).orElse(null);
+    }
+
+    public User getUserByEmail(String email) {
+        return repo.findByEmail(email).orElse(null); // assuming findByEmail returns Optional<User>
     }
 }

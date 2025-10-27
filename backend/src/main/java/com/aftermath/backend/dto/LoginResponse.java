@@ -1,25 +1,14 @@
 package com.aftermath.backend.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class LoginResponse {
-    private String message;
     private String sessionToken;
 
-    public LoginResponse(String message, String sessionToken) {
-        this.message = message;
+    public LoginResponse(String sessionToken) {
         this.sessionToken = sessionToken;
-    }
-
-    public void setMessage(String message){
-        this.message = message;
-    }
-    public void setSessionToken(String sessionToken){
-        this.sessionToken = sessionToken;
-    }
-
-    public String getMessage(){
-        return this.message;
-    }
-    public String getSessionToken(){
-        return this.sessionToken;
     }
 }

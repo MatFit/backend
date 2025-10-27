@@ -41,6 +41,13 @@ public class ApiResponseDTO<T> {
         this.success = false;
     }
 
+    public ApiResponseDTO(boolean b, String localizedMessage) {
+        this.message = localizedMessage;
+        this.error = error;
+        this.status = status;
+        this.success = b;
+    }
+
     // Static method to create a success response
     public static <T> ApiResponseDTO<T> success(T data) {
         return new ApiResponseDTO<>(data);
