@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.Check;
 
+import java.util.UUID;
+
 // Entities like user stored here
 @Entity
 @Table(name = "users")
@@ -14,7 +16,7 @@ public class User {
 
     @Id // Classify as unique ID
     @GeneratedValue(strategy = GenerationType.AUTO) // Generate unique ID most appropriate by JPA
-    final private Long id;
+    final private UUID id;
 
     @Email
     private String email;
@@ -30,14 +32,14 @@ public class User {
     // Skeleton Constructor
     protected User() { this.id = null; }
     // Parametrized Constructor
-    public User(Long id, String username, String email, String password) {
+    public User(UUID id, String username, String email, String password) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
     }
     // Getters and setters
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 

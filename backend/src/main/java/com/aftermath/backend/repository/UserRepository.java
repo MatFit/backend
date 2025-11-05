@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // Spring Data JPA kinda automatically does this with @Repository if naming conventions are clean
     // It'll generate it's sql queries for these searches
     boolean existsByUsername(String username);
-    Optional<User> findById(UUID uuid);
+    boolean existsByEmail(String email);
+    boolean existsById(UUID uuid);
     Optional<User> findByUsername(String username);
-    Optional<User> findByEmail(String email);
 }
