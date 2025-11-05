@@ -3,8 +3,10 @@ package com.aftermath.backend.service;
 import com.aftermath.backend.service.serviceInterface.TokenServiceInterface;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,7 +20,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@Service
+@RequiredArgsConstructor
 public class TokenService implements TokenServiceInterface {
 
     private final SecretKey secretKey;
@@ -33,7 +36,7 @@ public class TokenService implements TokenServiceInterface {
         return createJwtToken(Long.toString(id), expireIn);
     }
 
-    private String createJwtToken(String subject, Duration expireIn) {
+    public String createJwtToken(String subject, Duration expireIn) {
         Long nowMillis = System.currentTimeMillis();
         Long expMillis = nowMillis + expireIn.toMillis();
 
@@ -65,7 +68,7 @@ public class TokenService implements TokenServiceInterface {
             System.out.println("Failed to convert objects into strings for JSON: " + e);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid data format", e); // Will throw something better
         } catch (IllegalArgumentException e){
-            System.out.println("Failed in base 64 encoding, perhapds bad ASCII? : " + e);
+            System.out.println("Failed in base 64 encoding, perhaps bad ASCII? : " + e);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid data format", e); // Will throw something better
         }
         catch (Exception e){

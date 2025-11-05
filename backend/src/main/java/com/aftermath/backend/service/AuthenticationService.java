@@ -33,9 +33,8 @@ public class AuthenticationService implements AuthenticationServiceInterface {
         return getAuthResponse(userService.authenticateUser(loginRequest));
     }
     public String createAccessToken(User user) {
-        return tokenService.createJwtToken(user.getId(), Duration.of(appProperties.getAuth().getAccessTokenExpirationMsec(), ChronoUnit.MILLIS));
+        return tokenService.createJwtToken(user.getId().toString(), Duration.of(appProperties.getAuth().getAccessTokenExpirationMsec(), ChronoUnit.MILLIS));
     }
-
     private LoginResponse getAuthResponse(User user) {
         String accessToken = createAccessToken(user);
         return new LoginResponse(accessToken);

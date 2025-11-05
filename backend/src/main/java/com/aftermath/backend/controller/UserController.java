@@ -2,6 +2,7 @@ package com.aftermath.backend.controller;
 
 import com.aftermath.backend.dto.ApiResponseDTO;
 import com.aftermath.backend.dto.SignUpRequest;
+import com.aftermath.backend.dto.SignUpResponse;
 import com.aftermath.backend.model.User;
 import com.aftermath.backend.service.UserService;
 import jakarta.validation.Valid;
@@ -22,8 +23,8 @@ public class UserController {
         this.userService = userService;
     }
     @PostMapping(path = "/create")
-    public ResponseEntity<ApiResponseDTO<User>> inviteUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        User user = userService.registerNewUser(signUpRequest);
-        return ApiResponseDTO.success(user).toResponseEntity();
+    public ResponseEntity<ApiResponseDTO<SignUpResponse>> inviteUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+        SignUpResponse signUpResponse = userService.registerNewUser(signUpRequest);
+        return ApiResponseDTO.success(signUpResponse).toResponseEntity();
     }
 }

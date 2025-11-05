@@ -29,7 +29,7 @@ public class SecurityConfig {
         // new style CSRF disable:
         http.csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/signup", "/api/auth/login", "/")
+                .requestMatchers("/api/**")
                 .permitAll()
                 .anyRequest().authenticated()
         )
