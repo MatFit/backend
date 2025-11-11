@@ -1,5 +1,7 @@
 package com.aftermath.backend.config;
-
+import jakarta.annotation.PostConstruct;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -7,9 +9,15 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "app")
 public class AppProperties {
 
-    private final Auth auth = new Auth();
+    private Auth auth = new Auth();
 
-    public Auth getAuth() {
+    @PostConstruct
+    public void init() {
+        System.out.println("AppProperties initialized!");
+        System.out.println("Access token expiration: " + auth.getAccessTokenExpirationMsec());
+    }
+
+    public Auth getAuth(){
         return auth;
     }
 
@@ -22,6 +30,7 @@ public class AppProperties {
 
         public void setAccessTokenExpirationMsec(long accessTokenExpirationMsec) {
             this.accessTokenExpirationMsec = accessTokenExpirationMsec;
+            System.out.println("Setting expiration: " + accessTokenExpirationMsec);
         }
     }
 }

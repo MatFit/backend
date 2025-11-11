@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.sound.midi.SysexMessage;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -39,12 +40,14 @@ public class UserService implements UserServiceInterface {
 
     @NotNull
     public SignUpResponse registerNewUser(SignUpRequest signUpRequest){
-        if (getUserByUsername(signUpRequest.getUsername())){
+        if (getUserByUsername(signUpRequest.getUsername()).isPresent()){
             throw new RuntimeException("Username already exists"); // Closes thread, so I believe the whole backend needs fixing later
         }
-        if (getUserByEmail(signUpRequest.getEmail())){
+        if (getUserByEmail(signUpRequest.getEmail()).isPresent()){
             throw new RuntimeException("Email already exists");
         }
+
+
         String hashed = encoder.encode(signUpRequest.getPassword());
         User newUser = new User(null, signUpRequest.getUsername(), signUpRequest.getEmail(), hashed);
         repo.save(newUser);
@@ -52,7 +55,12 @@ public class UserService implements UserServiceInterface {
     }
     @NotNull
     public User authenticateUser(@NotNull LoginRequest loginRequest) {
-        User foundUser = repo.findByUsername(loginRequest.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found: " + loginRequest.getUsername()));
+        Optional<User> userOptional = repo.findByUsername(loginRequest.getUsername());
+        if (userOptional.isEmpty()) {
+            throw new UsernameNotFoundException("User not found: " + loginRequest.getUsername());
+        }
+        User foundUser = userOptional.get();
+
         if (!encoder.matches(loginRequest.getPassword(), foundUser.getPassword())) {
             throw new BadCredentialsException("Invalid username or password");
         }
@@ -62,20 +70,22 @@ public class UserService implements UserServiceInterface {
     public List<User> getAllUsers() {
         return repo.findAll();
     }
-    public boolean getUserByUsername(String username){
-        return repo.existsByUsername(username);
+    public Optional<User> getUserByUsername(String username){
+        return repo.findByUsername(username);
     }
-    public boolean getUserById(UUID uuid) {
-        return repo.existsById(uuid);
+
+    public Optional<User> getUserById(UUID uuid) {
+        return repo.findById(uuid);
     }
-    public boolean getUserByEmail(String email) {
-        return repo.existsByEmail(email); // assuming findByEmail returns Optional<User>
+
+    public Optional<User> getUserByEmail(String email) {
+        return repo.findByEmail(email);
     }
-    public String createAccessToken(User user) {
+    public String createJWTToken(User user) {
         return tokenService.createJwtToken(user.getId().toString(), Duration.of(appProperties.getAuth().getAccessTokenExpirationMsec(), ChronoUnit.MILLIS));
     }
     private SignUpResponse getAuthResponse(User user) {
-        String accessToken = createAccessToken(user);
+        String accessToken = createJWTToken(user);
         return new SignUpResponse(accessToken);
     }
 }

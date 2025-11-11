@@ -1,5 +1,6 @@
 package com.aftermath.backend.dto;
 
+
 public class SignUpRequest {
     private String username;
     private String password;

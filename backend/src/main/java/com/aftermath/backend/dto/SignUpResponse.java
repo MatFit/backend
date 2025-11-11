@@ -1,9 +1,16 @@
 package com.aftermath.backend.dto;
 
-public class SignUpResponse {
-    private String sessionToken;
+import lombok.Getter;
+import lombok.Setter;
 
-    public SignUpResponse(String sessionToken) {
-        this.sessionToken = sessionToken;
+
+public class SignUpResponse {
+    private String JWTtoken;
+
+    public SignUpResponse(String JWTtoken) {
+        this.JWTtoken = JWTtoken;
+    }
+    public String getJWTtoken(){
+        return JWTtoken;
     }
 }

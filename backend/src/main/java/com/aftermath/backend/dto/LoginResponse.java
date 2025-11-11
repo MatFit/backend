@@ -6,9 +6,20 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LoginResponse {
-    private String sessionToken;
+    private String jwtToken;
+    private String userEmail;
+    private String message;
 
+    public LoginResponse(String sessionToken, String userEmail, String message) {
+        this.jwtToken = jwtToken;
+        this.userEmail = userEmail;
+        this.message = message;
+    }
     public LoginResponse(String sessionToken) {
-        this.sessionToken = sessionToken;
+        this.jwtToken = jwtToken;
+    }
+
+    public String getJWTtoken() {
+        return jwtToken;
     }
 }

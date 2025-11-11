@@ -11,7 +11,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "users")
 public class User {
-    private static final int MAXIMUM_USERNAME_LENGTH = 12;
+    private static final int MAXIMUM_USERNAME_LENGTH = 100;
     private static final int MINIMUM_PASSWORD_LENGTH = 12;
 
     @Id // Classify as unique ID
