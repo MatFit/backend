@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class MarketEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
