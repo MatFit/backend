@@ -1,6 +1,6 @@
 package com.aftermath.backend.service;
 
-import com.aftermath.backend.service.serviceInterface.CryptoServiceInterface;
+import com.aftermath.backend.service.serviceInterface.CryptoServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import java.security.NoSuchAlgorithmException;
 
 @Service
 @RequiredArgsConstructor
-public class CryptoService implements CryptoServiceInterface {
+public class CryptoService implements CryptoServiceImpl {
     public SecretKey generateKey(int digits) throws NoSuchAlgorithmException {
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
         keyGen.init(digits);

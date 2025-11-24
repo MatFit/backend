@@ -6,7 +6,7 @@ import com.aftermath.backend.dto.LoginResponse;
 import java.io.IOException;
 import java.util.UUID;
 
-public interface AuthenticationServiceInterface {
+public interface AuthenticationServiceImpl {
     LoginResponse login (LoginRequest dto) throws IOException;
 
     default String generateSessionToken() {

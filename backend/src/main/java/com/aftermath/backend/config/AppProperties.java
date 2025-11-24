@@ -1,5 +1,7 @@
 package com.aftermath.backend.config;
-
+import jakarta.annotation.PostConstruct;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -7,9 +9,12 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "app")
 public class AppProperties {
 
-    private final Auth auth = new Auth();
+    private Auth auth = new Auth();
 
-    public Auth getAuth() {
+    @PostConstruct
+    public void init() { System.out.println("Initializing app properties");}
+
+    public Auth getAuth(){
         return auth;
     }
 

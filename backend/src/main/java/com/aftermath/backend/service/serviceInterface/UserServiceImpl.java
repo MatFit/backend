@@ -6,13 +6,14 @@ import com.aftermath.backend.dto.SignUpResponse;
 import com.aftermath.backend.model.User;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-public interface UserServiceInterface {
+public interface UserServiceImpl {
     SignUpResponse registerNewUser(SignUpRequest signUpRequest);
     User authenticateUser(LoginRequest loginRequest);
     List<User> getAllUsers();
-    boolean getUserByUsername(String username);
-    boolean getUserById(UUID uuid);
-    boolean getUserByEmail(String email);
+    Optional<User> getUserByUsername(String username);
+    Optional<User> getUserById(UUID uuid);
+    Optional<User> getUserByEmail(String email);
 }

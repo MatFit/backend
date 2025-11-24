@@ -13,11 +13,13 @@ import java.time.LocalDateTime;
 @Setter
 public class ApiResponseDTO<T> {
 
+    @Getter
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
     private String message;
     private HttpStatus status;
     private Boolean success;
+    @Getter
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object error;
     private final String timestamp = LocalDateTime.now().toString();
@@ -62,5 +64,5 @@ public class ApiResponseDTO<T> {
     public ResponseEntity<ApiResponseDTO<T>> toResponseEntity() {
         return ResponseEntity.status(this.status).body(this);
     }
-
+    public boolean isSuccess() { return success; }
 }
