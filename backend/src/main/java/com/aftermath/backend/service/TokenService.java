@@ -1,28 +1,22 @@
 package com.aftermath.backend.service;
 
-import com.aftermath.backend.service.serviceInterface.TokenServiceInterface;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.aftermath.backend.service.serviceInterface.TokenServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class TokenService implements TokenServiceInterface {
+public class TokenService implements TokenServiceImpl {
 
     private final SecretKey secretKey;
 

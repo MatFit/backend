@@ -40,10 +40,10 @@ public class SecurityConfig {
     }
     @Bean
     public WebMvcConfigurer CORSConfiguration() {
+        System.out.println("Calling on CORS Configeration...");
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry){
-                System.out.println("ASDFCASFSADFSDFASDFSASDFCASFSADFSDFASDFS");
                 registry.addMapping("/**")
                         .allowedOrigins("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")

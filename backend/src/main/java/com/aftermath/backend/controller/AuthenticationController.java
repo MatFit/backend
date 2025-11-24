@@ -45,7 +45,6 @@ public class AuthenticationController extends Controller {
         jwtCookie.setMaxAge(24 * 60 * 60);
 
         response.addCookie(jwtCookie);
-
         return ApiResponseDTO.success(loginResponse).toResponseEntity();
     }
 
@@ -54,13 +53,8 @@ public class AuthenticationController extends Controller {
             HttpServletRequest request,
             HttpServletResponse response) throws IOException {
 
-        System.out.println("Controller method started");
         String existingToken = getJWTFromCookies(request);
-        System.out.println("Token from cookies: " + existingToken);
-
         Optional<LoginResponse> loginResponse = authenticationService.validateExistingAuth(existingToken);
-        System.out.println("After validateExistingAuth");
-
         return ApiResponseDTO.<Optional<LoginResponse>>success(loginResponse).toResponseEntity();
     }
 

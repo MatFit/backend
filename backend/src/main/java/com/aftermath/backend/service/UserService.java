@@ -1,22 +1,18 @@
 package com.aftermath.backend.service;
 import com.aftermath.backend.config.AppProperties;
 import com.aftermath.backend.dto.LoginRequest;
-import com.aftermath.backend.dto.LoginResponse;
 import com.aftermath.backend.dto.SignUpRequest;
 import com.aftermath.backend.dto.SignUpResponse;
 import com.aftermath.backend.model.User;
 import com.aftermath.backend.repository.UserRepository;
-import com.aftermath.backend.service.serviceInterface.UserServiceInterface;
+import com.aftermath.backend.service.serviceInterface.UserServiceImpl;
 import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
-import org.antlr.v4.runtime.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.sound.midi.SysexMessage;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -24,7 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class UserService implements UserServiceInterface {
+public class UserService implements UserServiceImpl {
     private final UserRepository repo;
     private final PasswordEncoder encoder;
     private final TokenService tokenService;
@@ -49,7 +45,7 @@ public class UserService implements UserServiceInterface {
 
 
         String hashed = encoder.encode(signUpRequest.getPassword());
-        User newUser = new User(null, signUpRequest.getUsername(), signUpRequest.getEmail(), hashed);
+        User newUser = new User(signUpRequest.getUsername(), signUpRequest.getEmail(), hashed);
         repo.save(newUser);
         return getAuthResponse(newUser);
     }

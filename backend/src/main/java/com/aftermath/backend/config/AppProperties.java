@@ -12,10 +12,7 @@ public class AppProperties {
     private Auth auth = new Auth();
 
     @PostConstruct
-    public void init() {
-        System.out.println("AppProperties initialized!");
-        System.out.println("Access token expiration: " + auth.getAccessTokenExpirationMsec());
-    }
+    public void init() { System.out.println("Initializing app properties");}
 
     public Auth getAuth(){
         return auth;
@@ -30,7 +27,6 @@ public class AppProperties {
 
         public void setAccessTokenExpirationMsec(long accessTokenExpirationMsec) {
             this.accessTokenExpirationMsec = accessTokenExpirationMsec;
-            System.out.println("Setting expiration: " + accessTokenExpirationMsec);
         }
     }
 }

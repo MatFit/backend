@@ -5,12 +5,11 @@ import com.aftermath.backend.dto.LoginRequest;
 import com.aftermath.backend.dto.LoginResponse;
 import com.aftermath.backend.model.User;
 import com.aftermath.backend.repository.UserRepository;
-import com.aftermath.backend.service.serviceInterface.AuthenticationServiceInterface;
+import com.aftermath.backend.service.serviceInterface.AuthenticationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.sound.midi.SysexMessage;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -19,7 +18,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService implements AuthenticationServiceInterface {
+public class AuthenticationService implements AuthenticationServiceImpl {
     private final UserRepository userRepository;
     private final UserService userService;
     private final TokenService tokenService;

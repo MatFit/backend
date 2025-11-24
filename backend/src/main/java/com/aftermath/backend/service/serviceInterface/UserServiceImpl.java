@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserServiceInterface {
+public interface UserServiceImpl {
     SignUpResponse registerNewUser(SignUpRequest signUpRequest);
     User authenticateUser(LoginRequest loginRequest);
     List<User> getAllUsers();
